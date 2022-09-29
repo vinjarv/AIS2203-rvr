@@ -14,3 +14,21 @@ if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
 endif()
 
 include(${CMAKE_BINARY_DIR}/conan.cmake)
+
+set(DEPS
+        opencv/4.5.5
+        zeromq/4.3.4
+        )
+
+conan_cmake_run(
+        REQUIRES
+        ${DEPS}
+        GENERATORS cmake
+        BUILD missing
+        BASIC_SETUP CMAKE_TARGETS
+        OPTIONS opencv:contrib=True
+)
+
+link_libraries(
+        CONAN_PKG::opencv
+)
