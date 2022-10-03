@@ -17,7 +17,7 @@ include(${CMAKE_BINARY_DIR}/conan.cmake)
 
 set(DEPS
         opencv/4.5.5
-        zeromq/4.3.4
+        zmqpp/4.2.0
         )
 
 conan_cmake_run(
@@ -31,4 +31,7 @@ conan_cmake_run(
 
 link_libraries(
         CONAN_PKG::opencv
+        CONAN_PKG::zmqpp
 )
+
+add_subdirectory(examples)
