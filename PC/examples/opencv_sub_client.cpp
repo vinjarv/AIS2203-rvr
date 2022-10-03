@@ -3,15 +3,28 @@
 
 #include <vector>
 
-int main(){
+/*
+ * Supply with parameters - server host, port
+ */
+
+int main(int argc, char** argv){
     zmqpp::context ctx;
     zmqpp::socket sock{ctx, zmqpp::socket_type::sub};
     sock.set(zmqpp::socket_option::conflate, true); // Keep only
     sock.set(zmqpp::socket_option::subscribe, "");
 
-    const std::string endpoint = "tcp://localhost:5555";
-    std::cout << "Connecting to " << endpoint << std::endl;
-    sock.connect(endpoint);
+    try {
+        if (argc < 3)
+            throw std::exception("Too few arguments supplied, expected 'host' 'port'");
+        const std::string host = argv[1];
+        const std::string port = argv[2];
+        const std::string endpoint = "tcp://" + host + ":" + port;
+        std::cout << "Connecting to " << endpoint << std::endl;
+        sock.connect(endpoint);
+    } catch (const std::exception& e) {
+        std::cout << e.what() << std::endl;
+        return 1;
+    }
 
     cv::namedWindow("stream");
     cv::Mat frame;
