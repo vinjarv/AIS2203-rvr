@@ -4,14 +4,17 @@
 #include <vector>
 
 /*
- * Supply with parameters - server host, port
+ * Demo - receiving a stream of encoded images over a zmq socket
+ * Image is decoded with opencv and displayed
+ *
+ * Run with parameters - server host, port
  */
 
 int main(int argc, char** argv){
     zmqpp::context ctx;
     zmqpp::socket sock{ctx, zmqpp::socket_type::sub};
-    sock.set(zmqpp::socket_option::conflate, true); // Keep only
-    sock.set(zmqpp::socket_option::subscribe, "");
+    sock.set(zmqpp::socket_option::conflate, true); // Keep only most recent message
+    sock.set(zmqpp::socket_option::subscribe, "");  // No topic
 
     try {
         if (argc < 3)
