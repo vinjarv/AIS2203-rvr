@@ -93,4 +93,7 @@ makeMilestone('Finished project report', [tasks[0], tasks[8], tasks[14]])
 
 
 pRVR = makeProject('Sphero RVR', tasks)
-pRVR.make_svg_for_tasks(filename='test1.svg', today=dt.date(2022, 10, 4))
+pRVR.make_svg_for_tasks(filename='test1.svg', today=dt.date.today())
+
+if (__name__ == '__main__'):
+    print(dt.date.today())
