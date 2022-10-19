@@ -36,8 +36,8 @@ def makeProject(sTag, aTasks):
 
 #MAIN #8 (0-7)
 makeTask('MAIN PROGRAM (C++)', 21, 9, 48, 5, [rHLR, rVV, rMMM])
-makeSubtask('Structure', 22, 9, 15, 10, [rVV])
-makeSubtask('Manual control (xInput)', 28, 9, 13, 20, [rVV])
+makeSubtask('Structure', 22, 9, 20, 10, [rVV])
+makeSubtask('Manual control (xInput)', 28, 9, 18, 20, [rVV])
 makeSubtask('Input handling', 10, 10, 10, 0, [rVV])
 makeSubtask('Crash control', 17, 10, 8, 0, [rVV])
 makeSubtask('Object recognition (openCV)', 19, 10, 15, 0, [rVV])
@@ -47,8 +47,8 @@ makeSubtask('Lifting and placing', 7, 11, 10, 0, [rVV])
 
 #GUI #6 (8-13)
 makeTask('GUI (C++, Qt)', 21, 9, 48, 0, [rMMM])
-makeSubtask('Test values', 22, 9, 13, 0, [rMMM])
-makeSubtask('Layout', 7, 10, 11, 0, [rMMM])
+makeSubtask('Test values', 22, 9, 22, 0, [rMMM])
+makeSubtask('Layout', 7, 10, 16, 0, [rMMM])
 makeSubtask('Video display', 21, 10, 7, 0, [rMMM])
 makeSubtask('Buttons and meters', 31, 10, 10, 0, [rMMM])
 makeSubtask('Error handling', 7, 11, 10, 0, [rMMM])
@@ -57,7 +57,7 @@ makeSubtask('Error handling', 7, 11, 10, 0, [rMMM])
 #rPI #5 (14-18)
 makeTask('RASPBERRY PI (python)', 21, 9, 48, 0, [rHLR])
 makeSubtask('Contact and test values', 22, 9, 15, 0, [rHLR])
-makeSubtask('Input handling', 10, 10, 5, 0, [rHLR])
+makeSubtask('Input handling', 10, 10, 10, 0, [rHLR])
 makeSubtask('Video transmission', 14, 10, 6, 20, [rHLR])
 makeSubtask('Sensor data transmission', 21, 10, 10, 0, [rHLR])
 
@@ -93,7 +93,7 @@ makeMilestone('Finished project report', [tasks[0], tasks[8], tasks[14]])
 
 
 pRVR = makeProject('Sphero RVR', tasks)
-pRVR.make_svg_for_tasks(filename='test1.svg', today=dt.date.today())
+pRVR.make_svg_for_tasks(filename='w42.svg', today=dt.date.today())
 
 if (__name__ == '__main__'):
     print(dt.date.today())
