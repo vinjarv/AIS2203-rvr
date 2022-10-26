@@ -18,7 +18,10 @@ include(${CMAKE_BINARY_DIR}/conan.cmake)
 set(DEPS
         opencv/4.5.5
         zmqpp/4.2.0
+        boost/1.80.0
         )
+
+
 
 conan_cmake_run(
         REQUIRES
@@ -26,12 +29,13 @@ conan_cmake_run(
         GENERATORS cmake
         BUILD missing
         BASIC_SETUP CMAKE_TARGETS
-        OPTIONS opencv:contrib=True
+        OPTIONS opencv:contrib=True         # Needed for Aruco module
 )
 
 link_libraries(
         CONAN_PKG::opencv
         CONAN_PKG::zmqpp
+        CONAN_PKG::boost
 )
 
 add_subdirectory(examples)
