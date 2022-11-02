@@ -35,45 +35,44 @@ def makeProject(sTag, aTasks):
     return project
 
 #MAIN #8 (0-7)
-makeTask('MAIN PROGRAM (C++)', 21, 9, 48, 5, [rHLR, rVV, rMMM])
-makeSubtask('Structure', 22, 9, 20, 10, [rVV])
-makeSubtask('Manual control (xInput)', 28, 9, 18, 20, [rVV])
-makeSubtask('Input handling', 10, 10, 10, 0, [rVV])
-makeSubtask('Crash control', 17, 10, 8, 0, [rVV])
-makeSubtask('Object recognition (openCV)', 19, 10, 15, 0, [rVV])
-makeSubtask('Movement', 31, 10, 15, 0, [rVV])
-makeSubtask('Lifting and placing', 7, 11, 10, 0, [rVV])
+makeTask('MAIN PROGRAM (C++)', 17, 10, 30, 5, [rHLR, rVV, rMMM])
+makeSubtask('Structure', 17, 10, 18, 15, [rVV])
+makeSubtask('Manual control (arduino)', 31, 10, 10, 20, [rVV, rMMM])
+makeSubtask('Input handling', 2, 11, 10, 0, [rVV])
+makeSubtask('Crash control', 7, 11, 8, 0, [rVV])
+makeSubtask('Object recognition (openCV)', 7, 11, 13, 0, [rVV])
+makeSubtask('Movement', 9, 11, 11, 0, [rVV])
+makeSubtask('Lifting and placing', 14, 11, 10, 0, [rVV])
 
 
 #GUI #6 (8-13)
-makeTask('GUI (C++, Qt)', 21, 9, 48, 0, [rMMM])
-makeSubtask('Test values', 22, 9, 22, 0, [rMMM])
-makeSubtask('Layout', 7, 10, 16, 0, [rMMM])
-makeSubtask('Video display', 21, 10, 7, 0, [rMMM])
+makeTask('GUI (C++, Qt)', 17, 10, 30, 75, [rMMM])
+makeSubtask('Test values', 17, 10, 8, 0, [rMMM])
+makeSubtask('Layout', 24, 10, 5, 0, [rMMM])
+makeSubtask('Video display', 25, 10, 9, 0, [rMMM])
 makeSubtask('Buttons and meters', 31, 10, 10, 0, [rMMM])
 makeSubtask('Error handling', 7, 11, 10, 0, [rMMM])
 
 
 #rPI #5 (14-18)
-makeTask('RASPBERRY PI (python)', 21, 9, 48, 0, [rHLR])
-makeSubtask('Contact and test values', 22, 9, 15, 0, [rHLR])
-makeSubtask('Input handling', 10, 10, 10, 0, [rHLR])
-makeSubtask('Video transmission', 14, 10, 6, 20, [rHLR])
-makeSubtask('Sensor data transmission', 21, 10, 10, 0, [rHLR])
+makeTask('RASPBERRY PI (python)', 17, 10, 30, 20, [rHLR])
+makeSubtask('Contact and test values', 17, 10, 15, 0, [rHLR])
+makeSubtask('Input handling', 31, 10, 8, 0, [rHLR])
+makeSubtask('Video transmission', 2, 11, 8, 20, [rHLR])
+makeSubtask('Sensor data transmission', 7, 11, 10, 0, [rHLR])
 
 
 #Phys.Design #3 (19-22)
-makeTask('PHYSICAL DESIGN', 21, 9, 48, 0, [rVV])
-makeSubtask('Design (drawing)', 22, 9, 22, 20, [rVV])
-makeSubtask('3D-print', 17, 10, 8, 0, [rVV])
-makeSubtask('Mounting', 21, 10, 11, 0, [rVV])
+makeTask('PHYSICAL DESIGN', 17, 10, 30, 30, [rVV])
+makeSubtask('Design (drawing)', 17, 10, 17, 20, [rVV])
+makeSubtask('3D-print', 24, 10, 15, 0, [rVV])
+makeSubtask('Mounting', 7, 11, 10, 0, [rVV])
 
 
 
-
-makeTask('MEETINGS AND REPORTS', 21, 9, 58, 0, [rHLR, rVV, rMMM])
-makeSubtask('Prog.Rep.', 4, 10, 2, 100, [rHLR, rVV, rMMM])
-makeSubtask('Meeting', 12, 10, 1, 0, [rHLR, rVV, rMMM])
+makeTask('MEETINGS AND REPORTS', 17, 10, 40, 0, [rHLR, rVV, rMMM])
+#makeSubtask('Prog.Rep.', 4, 10, 2, 100, [rHLR, rVV, rMMM])
+#makeSubtask('Meeting', 12, 10, 1, 0, [rHLR, rVV, rMMM])
 makeSubtask('Prog.Rep.', 18, 10, 2, 0, [rHLR, rVV, rMMM])
 makeSubtask('Meeting', 26, 10, 1, 0, [rHLR, rVV, rMMM])
 makeSubtask('Prog.Rep.', 1, 11, 2, 0, [rHLR, rVV, rMMM])
@@ -93,7 +92,7 @@ makeMilestone('Finished project report', [tasks[0], tasks[8], tasks[14]])
 
 
 pRVR = makeProject('Sphero RVR', tasks)
-pRVR.make_svg_for_tasks(filename='w42.svg', today=dt.date.today())
+pRVR.make_svg_for_tasks(filename='w44.svg', today=dt.date.today())
 
 if (__name__ == '__main__'):
     print(dt.date.today())
