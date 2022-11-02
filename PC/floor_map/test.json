@@ -1,0 +1,46 @@
+{
+  "nodes": {
+    "100": {
+      "x": 5,
+      "y": 3,
+      "yaw": 220,
+      "connected_nodes": "200, 210",
+      "name": "Home"
+    },
+    "200": {
+      "x": 10,
+      "y": 3.8,
+      "yaw": 220,
+      "connected_nodes": "100, 201, 202",
+      "name": ""
+    },
+    "201": {
+      "x": 12,
+      "y": 3,
+      "yaw": 220,
+      "connected_nodes": "200",
+      "name": ""
+    },
+    "202": {
+      "x": 13,
+      "y": 5,
+      "yaw": 220,
+      "connected_nodes": "200",
+      "name": ""
+    },
+    "210": {
+      "x": 6,
+      "y": 10,
+      "yaw": 220,
+      "connected_nodes": "100, 300",
+      "name": "test"
+    },
+    "300": {
+      "x": 2,
+      "y": 10,
+      "yaw": 220,
+      "connected_nodes": "210",
+      "name": "test"
+    }
+  }
+}
