@@ -22,7 +22,11 @@ int main(int argc, const char *argv[])
     // Matrix to put the captured image in
     cv::Mat Img{};
     // Matrix with picture in it
+    cv::Mat img_coffee_clear = cv::imread("resources/coffee_clear.jpg", cv::IMREAD_COLOR);
+    cv::Mat img_coffee_processing = cv::imread("resources/coffee_processing.jpg", cv::IMREAD_COLOR);
     cv::Mat img_coffee_ready = cv::imread("resources/coffee_ready.jpg", cv::IMREAD_COLOR);
+
+
 
     // Start default camera for testing
     auto cam = cv::VideoCapture(0, cv::CAP_DSHOW);
