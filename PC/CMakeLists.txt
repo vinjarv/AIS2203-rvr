@@ -19,9 +19,8 @@ set(DEPS
         opencv/4.5.5
         zmqpp/4.2.0
         boost/1.80.0
+        zlib/1.2.12
         )
-
-
 
 conan_cmake_run(
         REQUIRES
