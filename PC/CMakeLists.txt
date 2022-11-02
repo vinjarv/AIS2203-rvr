@@ -39,3 +39,6 @@ link_libraries(
 )
 
 add_subdirectory(examples)
+
+
+file(COPY resources/ DESTINATION ${CMAKE_BINARY_DIR}/bin/resources)

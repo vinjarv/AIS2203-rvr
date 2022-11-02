@@ -1,0 +1,25 @@
+{
+  "nodes": {
+    "1": {
+      "x": 5,
+      "y": 3.4,
+      "yaw": 220,
+      "connected_nodes": "2",
+      "name": "Home"
+    },
+    "2": {
+      "x": 10,
+      "y": 3.8,
+      "yaw": 220,
+      "connected_nodes": "1",
+      "name": ""
+    },
+    "3": {
+      "x": 4,
+      "y": 2,
+      "yaw": 220,
+      "connected_nodes": "",
+      "name": "test"
+    }
+  }
+}
