@@ -4,8 +4,10 @@
 #include <string>
 #include <iostream>
 #include <chrono>
-#include <thread>
 #include <optional>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
 
 /*
  * Class to read data from IMU on serial port
@@ -47,7 +49,7 @@ private:
         while (true)
         {
             // --- Connect and read serial ---
-            if (not connected) { // Disconnected, attempt to connect to a serial port
+            if (! connected) { // Disconnected, attempt to connect to a serial port
                 if ( connectSerial() ) {
                     connected = true;
                 } else {
@@ -124,45 +126,77 @@ private:
         std::string message;
         message.reserve(max_bytes);
 
-        for (unsigned int i = 0; i < max_bytes; i++) {
-            try
-            {
-                // Read one byte
-                // TODO: Make timeout
-                serial->read_some(boost::asio::buffer(&c, 1));
+        // Boost.Asio doesn't support timeouts for the serial port read method
+        // We want to handle disconnections, so this read loop should run in parallel with a timeout check
+        // Here we will use the condition variable method wait_for to handle the timeout
+        // The read must then happen in a new thread
+        std::mutex m;
+        std::condition_variable cv;
+        bool read_finished = false;
+        bool read_success = false;
 
-                if (c == '\r') {
-                    // Don't add return char to string
-                    ;
-                } else if (c == '\n') {
-                    // Newline - end of line, message is done
-                    return message;
-                } else {
-                    // Regular char - add to string
-                    message.append(&c);
+        std::thread t {[&]
+        {
+            for (unsigned int i = 0; i < max_bytes; i++) {
+                try
+                {
+                    // Read one byte
+                    serial->read_some(boost::asio::buffer(&c, 1));
+
+                    if (c == '\n') {
+                        // Newline - end of line, message is complete
+                        read_success = true;
+                        break; // Jump out of for-loop {
+                    } else if (c == '\r') {
+                        // Don't add return char to string
+                        ;
+                    } else {
+                        // Regular char - add to string
+                        message.append(&c);
+                    }
                 }
+                catch (std::exception& ex)
+                {
+                    std::cout << "Serial input error:" << ex.what() << std::endl;
+                    break; // Jump out of for-loop
+                }
+                // If loop finished without reading a newline, message was too long
+                read_finished = true;
+                cv.notify_one();
             }
-            catch (std::exception& ex)
-            {
-                std::cout << "Serial input error:" << ex.what() << std::endl;
-                return std::nullopt;
-            }
+        }};
+
+        // Wait for thread finish or timeout
+        std::unique_lock<std::mutex> lk {m};
+        if (cv.wait_for(lk, std::chrono::milliseconds(500), [&]{return read_finished;})) {
+            // Read completed
+            // Check if message was received successfully
+            return read_success ? std::optional{message} : std::nullopt;
+        } else {
+            // Timed out,
+            return std::nullopt;
         }
         // No newline was received before byte limit was reached, return empty
         return std::nullopt;
     }
 
     // Define a data structure for storing the sensor data points
-    struct Vec3 {
-        float x;
-        float y;
-        float z;
-    };
-    struct IMUData {
-        Vec3 gyro;
-        Vec3 accel;
-    };
+
+
     struct SensorData {
+
+        struct IMUData {
+
+            struct Vec3 {
+                float x;
+                float y;
+                float z;
+            };
+
+            Vec3 gyro;
+            Vec3 accel;
+        };
+
         IMUData imu;
         bool buttonState;
     };
