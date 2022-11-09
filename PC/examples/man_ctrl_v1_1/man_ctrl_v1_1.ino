@@ -1,15 +1,17 @@
 #include <Adafruit_MPU6050.h>
 
-#define btnPin 1;
+#define btnPin 1
 Adafruit_MPU6050 MPUsensor;
 
 int btn;
 bool debug = false;
+unsigned long t_prev;
+unsigned long sampletime_ms = 20;
 
 void setup() {
   pinMode(btnPin, INPUT);
   
-  Serial.begin(9600);
+  Serial.begin(115200);
   while(!Serial){
     delay(10);
   }
@@ -26,34 +28,39 @@ void setup() {
   MPUsensor.setGyroRange(MPU6050_RANGE_500_DEG);
   MPUsensor.setFilterBandwidth(MPU6050_BAND_21_HZ);
   if(debug) Serial.println("MPU6050 sensor limits set");
-
-  Serial.println("");
-  Serial.println("x,\t y,\t z,\t btn");
+  
+//  Serial.println("");
+//  Serial.println("x,\t y,\t z,\t btn");
   delay(100);
+  t_prev = millis();
 }
 
 void loop() {
+  // Wait for one sample time to pass
+  while (millis() < t_prev+sampletime_ms) continue;
+  t_prev = millis();
+  
   sensors_event_t acc, gyro, temp;
   MPUsensor.getEvent(&acc, &gyro, &temp);
   btn = digitalRead(btnPin);
-  
-  // Writing to serial monitor
-  /*
-  Serial.print(acc.acceleration.x);
-  Serial.print(",\t");
-  Serial.print(acc.acceleration.y);
-  Serial.print(",\t");
-  Serial.print(acc.acceleration.z);
-  Serial.print(",\t");
-  Serial.println(btn);
-  */
 
-  Serial.print(gyro.gyro.x);
-  Serial.print(",\t");
-  Serial.print(gyro.gyro.y);
-  Serial.print(",\t");
-  Serial.print(gyro.gyro.z);
-  Serial.print(",\t");
+  // Writing to serial monitor
+  Serial.print(acc.acceleration.x, 5);
+  Serial.print(",");
+  Serial.print(acc.acceleration.y, 5);
+  Serial.print(",");
+  Serial.print(acc.acceleration.z, 5);
+  Serial.print(",");
+  
+  Serial.print(gyro.gyro.x, 5);
+  Serial.print(",");
+  Serial.print(gyro.gyro.y, 5);
+  Serial.print(",");
+  Serial.print(gyro.gyro.z, 5);
+  Serial.print(",");
+  
   Serial.print(btn);
   
+  Serial.print('\n');
+  Serial.flush();
 }

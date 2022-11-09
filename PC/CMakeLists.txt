@@ -19,7 +19,8 @@ set(DEPS
         opencv/4.5.5
         zmqpp/4.2.0
         boost/1.80.0
-        zlib/1.2.12
+        zlib/1.2.12                         # Specify to resolve opencv and boost dependency conflict
+        nlohmann_json/3.11.2
         )
 
 conan_cmake_run(
@@ -37,7 +38,8 @@ link_libraries(
         CONAN_PKG::boost
 )
 
-add_subdirectory(examples)
+include_directories(include/AIS2203-rvr)
 
+add_subdirectory(examples)
 
 file(COPY resources/ DESTINATION ${CMAKE_BINARY_DIR}/bin/resources)
