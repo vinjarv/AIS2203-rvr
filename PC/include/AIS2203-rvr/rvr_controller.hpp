@@ -1,3 +1,5 @@
+#pragma once
+
 #include "zmqpp/zmqpp.hpp"
 #include <string>
 
@@ -23,7 +25,7 @@ public:
             std::string{"{\"command\":\"manual\""} +
             std::string{"\"parameters\":{"} +
             std::string{"\"speed_forward\""} + std::to_string(speed_forward) + std::string{","} +
-            std::string{"\"speed_rotation\":"} + std::to_string(speed_forward) +
+            std::string{"\"speed_rotation\":"} + std::to_string(speed_rotation) +
             std::string{"}}"}
         };
         zmqpp::message_t msg;
