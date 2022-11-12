@@ -45,14 +45,14 @@ void loop() {
   btn = digitalRead(btnPin);
 
   // Writing to serial monitor
-  Serial.print(acc.acceleration.x, 5);
+  Serial.print(acc.acceleration.x, 5);  // SI units - m/s^2
   Serial.print(",");
   Serial.print(acc.acceleration.y, 5);
   Serial.print(",");
   Serial.print(acc.acceleration.z, 5);
   Serial.print(",");
   
-  Serial.print(gyro.gyro.x, 5);
+  Serial.print(gyro.gyro.x, 5); // SI units - rad/s
   Serial.print(",");
   Serial.print(gyro.gyro.y, 5);
   Serial.print(",");
