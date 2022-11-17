@@ -36,6 +36,7 @@ def makeProject(sTag, aTasks):
 
 #MAIN #7 (0-6)
 makeTask('MAIN PROGRAM (C++)', 31, 10, 20, 50, [rHLR, rVV, rMMM])
+
 makeSubtask('Structure', 31, 10, 8, 60, [rVV])
 makeSubtask('Manual control (arduino)', 31, 10, 10, 90, [rVV, rMMM])
 makeSubtask('Input/output handling', 2, 11, 10, 20, [rVV])
@@ -46,8 +47,7 @@ makeSubtask('Lifting and placing', 14, 11, 8, 0, [rVV])
 
 #GUI #7 (7-13)
 makeTask('GUI (C++, cvUI)', 31, 10, 20, 80, [rMMM])
-#makeSubtask('Test values', 17, 10, 8, 100, [rMMM])
-#makeSubtask('Layout', 24, 10, 5, 95, [rMMM])                # Add picframe for ob.rec
+
 makeSubtask('Video display', 31, 10, 5, 100, [rMMM])
 makeSubtask('Buttons and meters', 31, 10, 8, 100, [rMMM])
 makeSubtask('Input handling', 2, 11, 13, 50, [rMMM])        # Structure the inputs
@@ -56,6 +56,7 @@ makeSubtask('Error handling', 14, 11, 6, 10, [rMMM])         # Some display of e
 
 #rPI #6 (14-19)
 makeTask('RASPBERRY PI (python)', 31, 10, 20, 25, [rHLR])
+
 makeSubtask('Contact and test values', 31, 10, 6, 100, [rVV])
 makeSubtask('Input handling', 31, 10, 8, 30, [rHLR])
 makeSubtask('Crash control', 2, 11, 8, 0, [rHLR])
@@ -65,6 +66,7 @@ makeSubtask('Sensor data transmission', 7, 11, 10, 10, [rHLR])
 
 #Phys.Design #4 (20-23)
 makeTask('PHYSICAL DESIGN', 31, 10, 20, 30, [rHLR, rVV, rMMM])
+
 makeSubtask('Design lifting mecanism', 31, 10, 7, 23, [rVV])
 makeSubtask('Design manual control', 7, 11, 5, 80, [rMMM])
 makeSubtask('3D-print', 9, 11, 8, 20, [rVV, rMMM])
