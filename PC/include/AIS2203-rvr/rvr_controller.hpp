@@ -22,7 +22,7 @@ public:
     void driveManual(float speed_forward, float speed_rotation)
     {
         std::string command = {
-            std::string{"{\"command\":\"manual\""} +
+            std::string{"{\"command\":\"manual\","} +
             std::string{"\"parameters\":{"} +
             std::string{"\"speed_forward\""} + std::to_string(speed_forward) + std::string{","} +
             std::string{"\"speed_rotation\":"} + std::to_string(speed_rotation) +
@@ -36,7 +36,7 @@ public:
     void driveAuto(float x, float y, float yaw)
     {
         std::string command =   {
-            std::string{"{\"command\":\"auto\""} +
+            std::string{"{\"command\":\"auto\","} +
             std::string{"\"parameters\":{"} +
             std::string{"\"x\""} + std::to_string(x) + std::string{","} +
             std::string{"\"y\":"} + std::to_string(y) + "," +
@@ -52,12 +52,12 @@ public:
         this->driveManual(0, 0);
     }
 
-    void setServo(int channel, float duty_cycle) {
+    void setServo(int channel, float angle_deg) {
         std::string command =   {
-                std::string{"{\"command\":\"servo\""} +
+                std::string{"{\"command\":\"servo\","} +
                 std::string{"\"parameters\":{"} +
                 std::string{"\"channel\""} + std::to_string(channel) + std::string{","} +
-                std::string{"\"duty_cycle\":"} + std::to_string(duty_cycle) +
+                std::string{"\"angle_deg\":"} + std::to_string(angle_deg) +
                 std::string{"}}"}
         };
         zmqpp::message_t msg;
