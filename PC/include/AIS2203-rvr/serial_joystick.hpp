@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <cmath>
 #include <vector>
 #include <string>
 #include <iostream>
@@ -292,7 +293,7 @@ private:
 
     // Update (x,y) output axis values from roll and pitch angles
     void updateAxisOutputs(){
-        const float deadzone = 5.0f;
+        const float deadzone = 7.0f;
         const float max_angle = 35.0f;
         // Guard clause - no data to process
         if (!dataReady) {
@@ -303,25 +304,21 @@ private:
         // Get angles
         x = roll;
         y = pitch;
-        // If value is inside deadzone, set to 0
-        if (std::abs(x) <= deadzone) {
+        // As polar coordinates
+        float r = std::hypot(x, y);
+        // Guard clause - inside dead zone
+        if (r <= deadzone) {
             x = 0.0f;
-        } else {
-            // Either add or subtract deadzone, then scale from full range to [-1, 1]
-            x = (x < 0.0f) ? (x + deadzone) : (x - deadzone);
-            x /= (max_angle - deadzone);
-            // Constrain to get normalized output
-            x = std::clamp(x, -1.0f, 1.0f);
-        }
-        // Same as for x
-        if (std::abs(y) <= deadzone) {
             y = 0.0f;
-        } else {
-            y = (y < 0.0f) ? (y + deadzone) : (y - deadzone);
-            y /= (max_angle - deadzone);
-            // Constrain to get normalized output
-            y = std::clamp(y, -1.0f, 1.0f);
+            return;
         }
+        float theta = std::atan2(y, x);
+        // Scale from full range (between deadzone and max_angle) to [-1, 1]
+        r = (r - deadzone) / (max_angle - deadzone);
+        r = std::clamp(r, -1.0f, 1.0f);
+        // Get carthesian coordinates
+        x = r * cos(theta);
+        y = r * sin(theta);
     }
 
     class IMUKalman {
@@ -330,7 +327,7 @@ private:
         t0(std::chrono::steady_clock::now()),
         sample_time(sample_time),
         g0(gravity_calib),
-        samples_until_valid(int(3.0f / sample_time)) // 3s to run before filter output should have converged
+        samples_until_valid(int(1.0f / sample_time)) // 3s to run before filter output should have converged
         {
             x0 = cv::Mat::zeros(2, 1, CV_32F);
             P = cv::Mat::zeros(2, 2, CV_32F);
