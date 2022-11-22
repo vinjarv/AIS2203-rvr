@@ -1,7 +1,5 @@
 #include "serial_joystick.hpp"
 #include <iostream>
-#include <thread>
-#include <chrono>
 #include <vector>
 
 #include "opencv2/opencv.hpp"
@@ -48,8 +46,8 @@ int main() {
             // Draw position of joystick
             int boxsize = 200;
             int csize = 8;
-            float r_constrained = std::max(-1.0f, std::min(stick.x, 1.0f));
-            float p_constrained = std::max(-1.0f, std::min(stick.y, 1.0f));
+            float r_constrained = std::clamp(stick.x, -1.0f, 1.0f);
+            float p_constrained = std::clamp(stick.y, -1.0f, 1.0f);
             int px = boxsize/2 - csize/2 + (int) (r_constrained * ((float)(boxsize - csize) / 2.0f));
             int py = boxsize/2 - csize/2 + (int) (p_constrained * ((float)(boxsize - csize) / 2.0f));
             cvui::rect(frame, W-boxsize + 0, 0, boxsize, boxsize, 0x000000, 0xFFFFFF);

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <vector>
 #include <string>
 #include <iostream>
@@ -310,7 +311,7 @@ private:
             x = (x < 0.0f) ? (x + deadzone) : (x - deadzone);
             x /= (max_angle - deadzone);
             // Constrain to get normalized output
-            x = std::max(-1.0f, std::min(x, 1.0f));
+            x = std::clamp(x, -1.0f, 1.0f);
         }
         // Same as for x
         if (std::abs(y) <= deadzone) {
@@ -319,7 +320,7 @@ private:
             y = (y < 0.0f) ? (y + deadzone) : (y - deadzone);
             y /= (max_angle - deadzone);
             // Constrain to get normalized output
-            y = std::max(-1.0f, std::min(y, 1.0f));
+            y = std::clamp(y, -1.0f, 1.0f);
         }
     }
 
@@ -399,7 +400,7 @@ private:
             x0.at<float>(0) = wrapAngle(x0.at<float>(0));
             x0.at<float>(1) = wrapAngle(x0.at<float>(1));
             // Euler angles have a singularity problem at pitch +- 90 deg, constrain to avoid
-            x0.at<float>(1) = std::max(-PI/2.0f + 0.05f, std::min(x0.at<float>(1), PI/2.0f -0.05f));
+            x0.at<float>(1) = std::clamp(x0.at<float>(1), -PI/2.0f + 0.05f, PI/2.0f -0.05f);
         }
 
         void correct(SensorData data)
@@ -432,7 +433,7 @@ private:
             x0.at<float>(0) = wrapAngle(x0.at<float>(0));
             x0.at<float>(1) = wrapAngle(x0.at<float>(1));
             // Euler angles have a singularity problem at pitch +- 90 deg, constrain to avoid
-            x0.at<float>(1) = std::max(-PI/2.0f + 0.05f, std::min(x0.at<float>(1), PI/2.0f -0.05f));
+            x0.at<float>(1) = std::clamp(x0.at<float>(1), -PI/2.0f + 0.05f, PI/2.0f -0.05f);
         }
 
         [[nodiscard]] float wrapAngle(const float a) const{
