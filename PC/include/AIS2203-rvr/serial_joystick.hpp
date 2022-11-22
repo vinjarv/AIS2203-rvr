@@ -7,6 +7,7 @@
 #include <optional>
 #include <thread>
 #include <mutex>
+#include <memory>
 #include <condition_variable>
 
 #include "boost/asio.hpp"
@@ -23,7 +24,7 @@ public:
     explicit SerialJoystick(const unsigned int baudrate) :
             io(),
             baudrate(baudrate),
-            kf(0.010f, 10.3f)
+            kf(std::make_unique<IMUKalman>(kf_sample_time, kf_gravity_calib))
     {
         background_thread = std::thread{ [&] { run(); } };
     }
@@ -36,17 +37,26 @@ public:
     }
 
     void setKalmanQ_SD(const float sd) {
-        kf.setQ_SD(sd);
+        kf_q_sd = sd;
+        kf->setQ_SD(kf_q_sd);
     }
 
     void setKalmanR_SD(const float sd) {
-        kf.setR_SD(sd);
+        kf_r_sd = sd;
+        kf->setR_SD(kf_r_sd);
     }
 
     bool connected = false;
     bool dataReady = false;
-    float roll;
-    float pitch;
+    float roll;                     // Angle output in degrees
+    float pitch;                    //
+    float x;                        // Axis output - [-1, 1] - with deadzone, scaling and constraints
+    float y;                        //
+    float kf_gravity_calib = 9.3f;  // Default EKF parameters
+    float kf_sample_time = 0.010f;
+    float kf_q_sd = 1.0f;
+    float kf_r_sd = 1.0f;
+
 private:
 
     // Main loop of class, runs in background thread
@@ -66,8 +76,11 @@ private:
                 if ( connectSerial() ) {
                     readLine(1500); // Read and discard first line
                     connected = true;
+                    kf = std::make_unique<IMUKalman>(kf_sample_time, kf_gravity_calib); // Reset KF
+                    setKalmanQ_SD(kf_q_sd);
+                    setKalmanR_SD(kf_r_sd);
                 } else {
-                    std::cout << "Couldn't connect" << std::endl;
+                    std::cout << "[SerialJoystick]: Couldn't connect" << std::endl;
                     // Sleep for a while, then attempt connecting again
                     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
                 }
@@ -79,7 +92,7 @@ private:
                     sensordata = parseMessage(serial_message.value(), ',');
                 } else {
                     // Message couldn't be read, assume connection has been lost
-                    std::cout << "ReadLine failed, disconnecting" << std::endl;
+                    std::cout << "[SerialJoystick]: ReadLine failed, disconnecting" << std::endl;
                     connected = false;
                 }
             }
@@ -91,14 +104,17 @@ private:
 //                float dt_millis = (float) dt_micros / 1000.0f;
 //                last_filter_update = now;
 //                std::cout << dt_millis << "\n";
-                std::vector<float> rp = kf.run(sensordata.value());
+                std::vector<float> rp = kf->run(sensordata.value());
                 roll = rp[0];
                 pitch = rp[1];
-                dataReady = true;
+                dataReady = kf->samples_until_valid <= 0;
                 // std::cout << sensordata.value() << std::endl;
                 // Datapoint has been used, clear the value
                 sensordata = {};
             }
+
+            // Convert (r,p) angles to (x,y) output values
+            updateAxisOutputs();
 
             // --- Check if thread should keep running ---
             // If thread should finish, we can return at this point
@@ -123,7 +139,7 @@ private:
                 std::string current_port = std::string("COM") + std::to_string(i);
                 boost::asio::serial_port test_serial {io, current_port};
                 available_ports.push_back(current_port);
-                std::cout << "Found device at " << current_port << std::endl;
+                std::cout << "[SerialJoystick]: Found device at " << current_port << std::endl;
             }
             catch (std::exception& ex) {
                 //std::cout << ex.what() << std::endl;
@@ -132,11 +148,11 @@ private:
         }
 
         if (available_ports.empty()) {
-            std::cout << "No serial devices found" << std::endl;
+            std::cout << "[SerialJoystick]: No serial devices found" << std::endl;
             return false;
         } else {
             // Connect to last port in list
-            std::cout << "Selecting last port: " << available_ports.back() << std::endl;
+            std::cout << "[SerialJoystick]: Selecting last port: " << available_ports.back() << std::endl;
             serial = std::make_unique<boost::asio::serial_port>( io, available_ports.back());
             serial->set_option(baudrate);
             return true;
@@ -184,7 +200,7 @@ private:
                 }
                 catch (std::exception& ex)
                 {
-                    std::cout << "Serial input error:" << ex.what() << std::endl;
+                    std::cout << "[SerialJoystick]: Serial input error:" << ex.what() << std::endl;
                     break; // Jump out of for-loop
                 }
             }
@@ -273,12 +289,47 @@ private:
         return std::nullopt;
     }
 
+    // Update (x,y) output axis values from roll and pitch angles
+    void updateAxisOutputs(){
+        const float deadzone = 5.0f;
+        const float max_angle = 35.0f;
+        // Guard clause - no data to process
+        if (!dataReady) {
+           x = 0.0f;
+           y = 0.0f;
+           return;
+        }
+        // Get angles
+        x = roll;
+        y = pitch;
+        // If value is inside deadzone, set to 0
+        if (std::abs(x) <= deadzone) {
+            x = 0.0f;
+        } else {
+            // Either add or subtract deadzone, then scale from full range to [-1, 1]
+            x = (x < 0.0f) ? (x + deadzone) : (x - deadzone);
+            x /= (max_angle - deadzone);
+            // Constrain to get normalized output
+            x = std::max(-1.0f, std::min(x, 1.0f));
+        }
+        // Same as for x
+        if (std::abs(y) <= deadzone) {
+            y = 0.0f;
+        } else {
+            y = (y < 0.0f) ? (y + deadzone) : (y - deadzone);
+            y /= (max_angle - deadzone);
+            // Constrain to get normalized output
+            y = std::max(-1.0f, std::min(y, 1.0f));
+        }
+    }
+
     class IMUKalman {
     public:
         IMUKalman(float sample_time, float gravity_calib) :
         t0(std::chrono::steady_clock::now()),
         sample_time(sample_time),
-        g0(gravity_calib)
+        g0(gravity_calib),
+        samples_until_valid(int(3.0f / sample_time)) // 3s to run before filter output should have converged
         {
             x0 = cv::Mat::zeros(2, 1, CV_32F);
             P = cv::Mat::zeros(2, 2, CV_32F);
@@ -292,18 +343,21 @@ private:
             correct(data);
             const float r = x0.at<float>(0) * RAD_TO_DEG;
             const float p = x0.at<float>(1) * RAD_TO_DEG;
+            samples_until_valid = (samples_until_valid > 0) ? samples_until_valid - 1 : 0;
             return {r, p};
         }
 
         void setQ_SD(const float sd) {
             std::lock_guard<std::mutex> lk(m);
-            Q = cv::Mat::eye(2, 2, CV_32F) * sd;
+            Q = cv::Mat::eye(2, 2, CV_32F) * sd * sd; // Multiply by variance
         }
 
         void setR_SD(const float sd) {
             std::lock_guard<std::mutex> lk(m);
-            R = cv::Mat::eye(3, 3, CV_32F) * sd;
+            R = cv::Mat::eye(3, 3, CV_32F) * sd * sd; // Multiply by variance
         }
+
+        int samples_until_valid;
 
     private:
         void predict(const SensorData data)
@@ -381,7 +435,7 @@ private:
             x0.at<float>(1) = std::max(-PI/2.0f + 0.05f, std::min(x0.at<float>(1), PI/2.0f -0.05f));
         }
 
-        float wrapAngle(const float a){
+        [[nodiscard]] float wrapAngle(const float a) const{
             // Mod 2*pi
             float times = std::floor(std::abs(a / (2*PI)));
             float sign = 1 - 2*(float)std::signbit(a);
@@ -413,5 +467,5 @@ private:
     boost::asio::serial_port_base::baud_rate baudrate;
     std::thread background_thread;
     std::atomic<bool> stop_requested = false;
-    IMUKalman kf;
+    std::unique_ptr<IMUKalman> kf;
 };

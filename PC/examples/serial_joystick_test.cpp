@@ -22,9 +22,8 @@ int main() {
 
     auto stick = SerialJoystick(115200);
 
-
-    float q = 0.15f;
-    float r = 3.0f;
+    float q = 0.3f;
+    float r = 4.0f;
     stick.setKalmanQ_SD(q);
     stick.setKalmanR_SD(r);
     while (true) {
@@ -49,10 +48,10 @@ int main() {
             // Draw position of joystick
             int boxsize = 200;
             int csize = 8;
-            float r_constrained = std::max(-35.0f, std::min(stick.roll, 35.0f));
-            float p_constrained = std::max(-35.0f, std::min(stick.pitch, 35.0f));
-            int px = boxsize/2 - csize/2 + (int) (r_constrained * ((float)(boxsize - csize) / 70.0f));
-            int py = boxsize/2 - csize/2 + (int) (p_constrained * ((float)(boxsize - csize) / 70.0f));
+            float r_constrained = std::max(-1.0f, std::min(stick.x, 1.0f));
+            float p_constrained = std::max(-1.0f, std::min(stick.y, 1.0f));
+            int px = boxsize/2 - csize/2 + (int) (r_constrained * ((float)(boxsize - csize) / 2.0f));
+            int py = boxsize/2 - csize/2 + (int) (p_constrained * ((float)(boxsize - csize) / 2.0f));
             cvui::rect(frame, W-boxsize + 0, 0, boxsize, boxsize, 0x000000, 0xFFFFFF);
             cvui::rect(frame, W-boxsize + px, py, csize, csize, 0x000000, 0xFF0000);
 
