@@ -1,6 +1,6 @@
 #include <Adafruit_MPU6050.h>
 
-#define btnPin 1
+#define btnPin 2
 Adafruit_MPU6050 MPUsensor;
 
 int btn;
@@ -9,7 +9,7 @@ unsigned long t_prev;
 unsigned long sampletime_ms = 20;
 
 void setup() {
-  pinMode(btnPin, INPUT);
+  pinMode(btnPin, INPUT_PULLUP);
   
   Serial.begin(115200);
   while(!Serial){
@@ -42,21 +42,21 @@ void loop() {
   
   sensors_event_t acc, gyro, temp;
   MPUsensor.getEvent(&acc, &gyro, &temp);
-  btn = digitalRead(btnPin);
+  btn = !digitalRead(btnPin);
 
   // Writing to serial monitor
-  Serial.print(acc.acceleration.x, 5);  // SI units - m/s^2
+  Serial.print(+acc.acceleration.x, 5);  // SI units - m/s^2
   Serial.print(",");
-  Serial.print(acc.acceleration.y, 5);
+  Serial.print(-acc.acceleration.y, 5);
   Serial.print(",");
-  Serial.print(acc.acceleration.z, 5);
+  Serial.print(-acc.acceleration.z, 5);
   Serial.print(",");
   
-  Serial.print(gyro.gyro.x, 5); // SI units - rad/s
+  Serial.print(+gyro.gyro.x, 5); // SI units - rad/s
   Serial.print(",");
-  Serial.print(gyro.gyro.y, 5);
+  Serial.print(-gyro.gyro.y, 5);
   Serial.print(",");
-  Serial.print(gyro.gyro.z, 5);
+  Serial.print(-gyro.gyro.z, 5);
   Serial.print(",");
   
   Serial.print(btn);
