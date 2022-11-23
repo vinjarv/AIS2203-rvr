@@ -36,6 +36,7 @@ link_libraries(
         CONAN_PKG::opencv
         CONAN_PKG::zmqpp
         CONAN_PKG::boost
+        CONAN_PKG::nlohmann_json
 )
 
 include_directories(include/AIS2203-rvr)
