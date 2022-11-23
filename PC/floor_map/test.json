@@ -18,7 +18,7 @@
       "x": 12,
       "y": 3,
       "yaw": 220,
-      "connected_nodes": "200",
+      "connected_nodes": "200, 304",
       "name": ""
     },
     "202": {
@@ -26,21 +26,49 @@
       "y": 5,
       "yaw": 220,
       "connected_nodes": "200",
-      "name": ""
+      "name": "Station 1"
     },
     "210": {
       "x": 6,
       "y": 10,
       "yaw": 220,
       "connected_nodes": "100, 300",
-      "name": "test"
+      "name": ""
     },
     "300": {
       "x": 2,
       "y": 10,
       "yaw": 220,
-      "connected_nodes": "210",
-      "name": "test"
+      "connected_nodes": "210, 301",
+      "name": "Station 2"
+    },
+    "301": {
+      "x": 2.3,
+      "y": 8,
+      "yaw": 220,
+      "connected_nodes": "300, 302",
+      "name": ""
+    },
+    "302": {
+      "x": 1.5,
+      "y": 4,
+      "yaw": 220,
+      "connected_nodes": "301, 303",
+      "name": ""
+    },
+    "303": {
+      "x": 3,
+      "y": 1,
+      "yaw": 220,
+      "connected_nodes": "302, 304",
+      "name": ""
+    },
+    "304": {
+      "x": 10,
+      "y": 1.2,
+      "yaw": 220,
+      "connected_nodes": "303, 201",
+      "name": ""
     }
-  }
+    }
 }

@@ -20,7 +20,13 @@ for id in ids:
     if connected[0] != "":
         # Plot node connection lines
         for neighbour in connected:
-            plt.plot([float(node["x"]), float(nodes[neighbour]["x"])], [float(node["y"]), float(nodes[neighbour]["y"])], color="orange")
+            x = float(node["x"]); y = float(node["y"])
+            nx = float(nodes[neighbour]["x"]); ny = float(nodes[neighbour]["y"])
+            dx = (nx-x); dy = (ny-y)
+            l = (dx**2 + dy**2)**0.5
+            dx, dy = (dx*0.3/l, dy*0.3/l)
+            plt.plot([x, nx], [y, ny], color="orange")
+            plt.arrow(x, y, dx, dy, width=0.05, head_width=5*0.05, color="black")
     # Store coordinates of node
     coords_x.append(float(node["x"]))
     coords_y.append(float(node["y"]))
@@ -29,7 +35,7 @@ for id in ids:
 plt.scatter(coords_x, coords_y, color="k")
 # Plot text label
 for i in range(len(ids)):
-    plt.text(coords_x[i]+0.1, coords_y[i]+0.1, list(ids)[i], fontsize=7, color="green")
+    plt.text(coords_x[i]+0.2, coords_y[i]+0.2, list(ids)[i], fontsize=7, color="green")
 
 # Plot origin
 plt.quiver(0, 0, 1, 0, scale_units="xy", scale=1/1, color="r")

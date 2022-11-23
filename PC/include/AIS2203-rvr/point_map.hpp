@@ -16,19 +16,22 @@
 struct NavPoint{
     // Constructors
     NavPoint() = default;
-    NavPoint(float x, float y, std::string id) :
-        x(x),
-        y(y),
-        id(std::move(id)) {};
-    NavPoint(float x, float y, std::string id, std::vector<std::string> adj) :
+    NavPoint(float x, float y, std::string id, std::string name) :
         x(x),
         y(y),
         id(std::move(id)),
+        name(std::move(name)){};
+    NavPoint(float x, float y, std::string id, std::string name, std::vector<std::string> adj) :
+        x(x),
+        y(y),
+        id(std::move(id)),
+        name(std::move(name)),
         adj(std::move(adj)) {};
 
     float x = 0.0f;
     float y = 0.0f;
     std::string id;
+    std::string name;
     std::vector<std::string> adj = {};
 };
 
@@ -45,7 +48,8 @@ public:
                 NavPoint np (
                     node.value()["x"],
                     node.value()["y"],
-                    std::string(node.key())
+                    std::string(node.key()),
+                    std::string(node.value()["name"])
                 );
                 // Iterate over string and get adjacent node ids
                 // Trim spaces, separate at comma
@@ -72,6 +76,19 @@ public:
             std::cout << "[PointMap]: Error reading file \"" << filename << "\"\n" << ex.what() << std::endl;
         }
     }
+
+
+    std::vector<NavPoint> getNamedNodes()
+    {
+        std::vector<NavPoint> named_nodes;
+        for (const auto& [key, node] : points) {
+            if( !node.name.empty() ) {
+                named_nodes.emplace_back(node);
+            }
+        }
+        return named_nodes;
+    }
+
 
     // A* search for path from start to end
     // Implemented based on https://en.wikipedia.org/wiki/A*_search_algorithm
