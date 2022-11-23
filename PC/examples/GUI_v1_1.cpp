@@ -4,7 +4,8 @@
 //
 #include <opencv2/opencv.hpp>
 #include <string>
-#include <iostream>
+#include <chrono>
+#include <thread>
 
 #define CVUI_IMPLEMENTATION
 #include "cvui.h"
@@ -15,6 +16,7 @@ int main(int argc, const char *argv[])
 {
     // Create GUI- frame
     cv::Mat Frame = cv::Mat(725, 1880, CV_8UC3);
+    Frame = cv::Scalar(49, 52, 49);
 
     // Create openCV window
     cvui::init(GUI_NAME);
@@ -33,9 +35,9 @@ int main(int argc, const char *argv[])
     cam.set(cv::CAP_PROP_FRAME_WIDTH, 1280);     //640
     cam.set(cv::CAP_PROP_FRAME_HEIGHT, 720);    //480
 
+    int coffee_state_var = 1;
 
     while (true){
-        Frame = cv::Scalar(49, 52, 49);
         auto capture_success = cam.read(Img);
         if (capture_success) {
             cvui::image(Frame, 600, 0, Img);
@@ -44,24 +46,34 @@ int main(int argc, const char *argv[])
 
         cvui::window(Frame, 5, 5, 590, 490, "CONTROL", 0.6);
         cvui::rect(Frame, 15, 45, 570, 440, 0x0e0c0d, 0x0e0c0d);
-        int coffee_state_var = 1;
+
         std::string coffee_state;
         switch(coffee_state_var){
-            case 1: coffee_state = "Ready For Order";
+            case 1:
+                coffee_state = "Ready For Order";
+                cvui::image(Frame, 180, 70, img_coffee_clear);
                 break;
-            case 2: coffee_state = "Processing";
+            case 2:
+                coffee_state = "Processing";
+                cvui::image(Frame, 180, 70, img_coffee_processing);
                 break;
-            case 3: coffee_state = "Coffee Ready";
+            case 3:
+                coffee_state = "Coffee Ready";
+                cvui::image(Frame, 180, 70, img_coffee_ready);
                 break;
-            case 4: coffee_state = "Error";
+            case 4:
+                coffee_state = "Error";
                 break;
-            default: coffee_state = "Initializing..";
+            default:
+                coffee_state = "Initializing..";
         }
         cvui::printf(Frame, 20, 50, 0.5, 0x00ff00, "%s", coffee_state.c_str());
-        cvui::image(Frame, 180, 70, img_coffee_ready);
+
         if (cvui::button(Frame, 150, 440, 300, 30, "Get me some coffee", 0.6)){
             //Get the coffee!!
-            std::cout<<"Coffee on its way"<<'\n';
+            coffee_state_var = 2;
+            std::this_thread::sleep_for(std::chrono::seconds(5));
+            coffee_state_var = 3;
         }
 
         cvui::window(Frame, 5, 500, 590, 190, "RVR STATUS", 0.6);
@@ -78,11 +90,6 @@ int main(int argc, const char *argv[])
 
         bool MANUAL_STATE = false;
         cvui::checkbox(Frame, 10, 700, "MANUAL CONTROL", &MANUAL_STATE);
-
-
-
-
-
 
 
         // Update and show

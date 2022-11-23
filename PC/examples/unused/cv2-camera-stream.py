@@ -23,3 +23,33 @@ while True:
     sock.send(data)
 
 # Try sending one larger in between small frames?
+
+
+
+import socket
+import cv2 as cv
+import numpy as np
+
+# Udp comm
+IP = "127.0.0.1"
+PORT = 13
+
+#listen to port
+
+#make header to send back
+
+#capture img, convert and send
+
+
+
+
+
+
+
+
+
+
+
+cap = cv:VideoCapture(0, cv.CAP_ANY)
+cap.set(cv.CAP_PROP_FRAME_WIDTH, 205*cap_size)
+                      )

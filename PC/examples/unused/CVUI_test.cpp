@@ -6,7 +6,7 @@
 // One (and only one) of your C++ files must define CVUI_IMPLEMENTATION
 // before the inclusion of cvui.h to ensure its implementaiton is compiled.
 #define CVUI_IMPLEMENTATION
-#include "cvui.h"
+#include "../cvui.h"
 
 #define WINDOW_NAME "CVUI GUI"
 
