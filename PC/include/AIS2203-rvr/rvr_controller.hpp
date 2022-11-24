@@ -2,6 +2,7 @@
 
 #include "zmqpp/zmqpp.hpp"
 #include <string>
+#include <iostream>
 
 class RVRController {
 public:
@@ -19,12 +20,12 @@ public:
         this->driveManual(0, 0);
     }
 
-    void driveManual(float speed_forward, float speed_rotation)
+    void driveManual(const float speed_forward, const float speed_rotation)
     {
         std::string command = {
             std::string{"{\"command\":\"manual\","} +
             std::string{"\"parameters\":{"} +
-            std::string{"\"speed_forward\""} + std::to_string(speed_forward) + std::string{","} +
+            std::string{"\"speed_forward\":"} + std::to_string(speed_forward) + std::string{","} +
             std::string{"\"speed_rotation\":"} + std::to_string(speed_rotation) +
             std::string{"}}"}
         };
@@ -33,12 +34,12 @@ public:
         socket.send(msg);
     }
 
-    void driveAuto(float x, float y, float yaw)
+    void driveAuto(const float x, const float y, const float yaw)
     {
         std::string command =   {
             std::string{"{\"command\":\"auto\","} +
             std::string{"\"parameters\":{"} +
-            std::string{"\"x\""} + std::to_string(x) + std::string{","} +
+            std::string{"\"x\":"} + std::to_string(x) + std::string{","} +
             std::string{"\"y\":"} + std::to_string(y) + "," +
             std::string{"\"yaw\":"} + std::to_string(yaw) +
             std::string{"}}"}
@@ -52,12 +53,26 @@ public:
         this->driveManual(0, 0);
     }
 
-    void setServo(int channel, float angle_deg) {
+    void setServo(const int channel, const float angle_deg) {
         std::string command =   {
                 std::string{"{\"command\":\"servo\","} +
                 std::string{"\"parameters\":{"} +
-                std::string{"\"channel\""} + std::to_string(channel) + std::string{","} +
+                std::string{"\"channel\":"} + std::to_string(channel) + std::string{","} +
                 std::string{"\"angle_deg\":"} + std::to_string(angle_deg) +
+                std::string{"}}"}
+        };
+        zmqpp::message_t msg;
+        msg << command;
+        socket.send(msg);
+    }
+
+    void setColour(const unsigned int r, const unsigned int g, const unsigned int b) {
+        std::string command =   {
+                std::string{"{\"command\":\"set_colour\","} +
+                std::string{"\"parameters\":{"} +
+                std::string{"\"r\":"} + std::to_string(r) + std::string{","} +
+                std::string{"\"g\":"} + std::to_string(g) + std::string{","} +
+                std::string{"\"b\":"} + std::to_string(b) +
                 std::string{"}}"}
         };
         zmqpp::message_t msg;
