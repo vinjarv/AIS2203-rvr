@@ -54,6 +54,7 @@ public:
     float pitch;                    //
     float x;                        // Axis output - [-1, 1] - with deadzone, scaling and constraints
     float y;                        //
+    bool button;                    // True if pressed
     float kf_gravity_calib = 9.3f;  // Default EKF parameters
     float kf_sample_time = 0.010f;
     float kf_q_sd = 1.0f;
@@ -75,6 +76,7 @@ private:
             // --- Connect and read serial ---
             if (! connected) { // Disconnected, attempt to connect to a serial port
                 dataReady = false;
+                button = false;
                 if ( connectSerial() ) {
                     readLine(1500); // Read and discard first line
                     connected = true;
@@ -109,6 +111,7 @@ private:
                 std::vector<float> rp = kf->run(sensordata.value());
                 roll = rp[0];
                 pitch = rp[1];
+                button = sensordata.value().buttonState;
                 dataReady = kf->samples_until_valid <= 0;
                 // std::cout << sensordata.value() << std::endl;
                 // Datapoint has been used, clear the value
@@ -455,8 +458,9 @@ private:
         std::chrono::time_point<std::chrono::steady_clock> t0;
         const float sample_time;
         const float g0;
-        const float RAD_TO_DEG = 180.0f / 3.14159265358979f;
         const float PI = 3.14159265358979f;
+        const float RAD_TO_DEG = 180.0f / PI;
+
     };
 
     // Fields
