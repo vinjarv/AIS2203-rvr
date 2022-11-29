@@ -10,8 +10,8 @@
 #include <string>
 
 //Test values:
-const int img_height = 480;
-const int img_width = 640;
+const int img_height = 960;
+const int img_width = 1280;
 
 
 

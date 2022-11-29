@@ -38,7 +38,6 @@ class Videostream:
         suc, img_enc = cv.imencode(".jpg", img_frame_resized)
         if suc:
             img_bytes = img_enc.tobytes()
-        print(len(img_bytes))
         img_packets, n_Packets = self.__splitInPackets(img_bytes)
         self.__sendHeader(n_Packets, img_bytes, addr)
         self.__sendPackets(img_packets, addr)
@@ -63,7 +62,10 @@ class Videostream:
     
     #Num_packets, Packet_size, Num_bytes, Num_bytes in last
     def __sendHeader(self, nPackets, byteString, addr):
-        tx_header_buffer = nPackets.to_bytes(2, 'big') + (self.TX_BUFFER_SIZE+2).to_bytes(2, 'big')+(len(byteString)+2*nPackets).to_bytes(4, 'big')+(len(byteString)%self.TX_BUFFER_SIZE+2).to_bytes(2, 'big')
+        tx_header_buffer = nPackets.to_bytes(2, 'big') + \
+            (self.TX_BUFFER_SIZE+2).to_bytes(2, 'big') + \
+                (len(byteString)+2*nPackets).to_bytes(4, 'big') + \
+                    (len(byteString)%self.TX_BUFFER_SIZE+2).to_bytes(2, 'big')
         self.__sock.sendto(tx_header_buffer, addr)
         
     def __sendPackets(self, byte_array, addr):
@@ -78,9 +80,13 @@ class Videostream:
 if __name__ == '__main__':  
     vidStream = Videostream("127.0.0.1", 14)
     vidStream.initServer()
+    # Implement switch case or something so vidcap only starts when rx_buf != 0 (timeout maybe 5sek)
     cap = cv.VideoCapture(0, cv.CAP_ANY)
     while True:
         vidStream.run(cap)
+        
+    cap.release()
+        
     
 
     
