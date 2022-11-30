@@ -35,64 +35,64 @@ def makeProject(sTag, aTasks):
     return project
 
 #MAIN #7 (0-6)
-makeTask('MAIN PROGRAM (C++)', 31, 10, 20, 50, [rHLR, rVV, rMMM])
+makeTask('MAIN PROGRAM (C++)', 14, 11, 16, 80, [rHLR, rVV, rMMM])
 
-makeSubtask('Structure', 31, 10, 8, 60, [rVV])
-makeSubtask('Manual control (arduino)', 31, 10, 10, 90, [rVV, rMMM])
-makeSubtask('Input/output handling', 2, 11, 10, 20, [rVV])
-makeSubtask('Object recognition (openCV)', 7, 11, 13, 0, [rMMM])
-makeSubtask('Movement', 9, 11, 11, 20, [rVV])
-makeSubtask('Lifting and placing', 14, 11, 8, 0, [rVV])
+makeSubtask('Movement', 14, 11, 6, 100, [rVV])
+makeSubtask('Manual control (arduino)', 14, 11, 8, 100, [rVV, rMMM])
+makeSubtask('Object recognition (openCV)', 14, 11, 13, 100, [rMMM])
+makeSubtask('Structure', 14, 11, 13, 80, [rVV])
+makeSubtask('Input/output handling', 14, 11, 15, 80, [rVV])
+makeSubtask('Lifting and placing', 24, 11, 7, 0, [rVV])
+makeSubtask('Program assembly', 30, 11, 4, 20, [rMMM])
 
 
 #GUI #7 (7-13)
-makeTask('GUI (C++, cvUI)', 31, 10, 20, 80, [rMMM])
+makeTask('GUI (C++, cvUI)', 14, 11, 16, 85, [rMMM])
 
-makeSubtask('Video display', 31, 10, 5, 100, [rMMM])
-makeSubtask('Buttons and meters', 31, 10, 8, 100, [rMMM])
-makeSubtask('Input handling', 2, 11, 13, 50, [rMMM])        # Structure the inputs
-makeSubtask('Error handling', 14, 11, 6, 10, [rMMM])         # Some display of error
+makeSubtask('Video display', 14, 11, 5, 100, [rMMM])
+makeSubtask('Buttons and meters', 14, 11, 5, 100, [rMMM])
+makeSubtask('Input handling', 14, 11, 15, 80, [rMMM])        # Structure the inputs
+makeSubtask('Error handling', 14, 11, 16, 10, [rMMM])         # Some display of error
 
 
 #rPI #6 (14-19)
-makeTask('RASPBERRY PI (python)', 31, 10, 20, 25, [rHLR])
 
-makeSubtask('Contact and test values', 31, 10, 6, 100, [rVV])
-makeSubtask('Input handling', 31, 10, 8, 30, [rHLR])
-makeSubtask('Crash control', 2, 11, 8, 0, [rHLR])
-makeSubtask('Video transmission', 2, 11, 8, 50, [rMMM])
-makeSubtask('Sensor data transmission', 7, 11, 10, 10, [rHLR])
+makeTask('RASPBERRY PI (python)', 14, 11, 16, 80, [rHLR])
+
+makeSubtask('Contact and test values', 14, 11, 5, 100, [rVV])
+makeSubtask('Video transmission', 14, 11, 5, 100, [rMMM])
+makeSubtask('Input handling', 14, 11, 8, 100, [rHLR])
+makeSubtask('Sensor data transmission', 14, 11, 14, 70, [rHLR])
+makeSubtask('Crash control', 28, 11, 5, 0, [rHLR])
+makeSubtask('Program assembly', 30, 11, 4, 20, [rMMM])
 
 
 #Phys.Design #4 (20-23)
-makeTask('PHYSICAL DESIGN', 31, 10, 20, 30, [rHLR, rVV, rMMM])
+makeTask('PHYSICAL DESIGN', 14, 11, 17, 40, [rHLR, rVV, rMMM])
 
-makeSubtask('Design lifting mecanism', 31, 10, 7, 23, [rVV])
-makeSubtask('Design manual control', 7, 11, 5, 80, [rMMM])
-makeSubtask('3D-print', 9, 11, 8, 20, [rVV, rMMM])
-makeSubtask('Mounting', 14, 11, 6, 0, [rHLR, rVV, rMMM])
+makeSubtask('Design manual control', 14, 11, 8, 100, [rMMM])
+makeSubtask('Design lifting mecanism', 14, 11, 14, 30, [rVV])
+makeSubtask('3D-print', 14, 11, 15, 30, [rVV, rMMM])
+makeSubtask('Mounting', 2, 12, 3, 20, [rHLR, rVV, rMMM])
 
 
 
-makeTask('MEETINGS AND REPORTS', 31, 10, 30, 0, [rHLR, rVV, rMMM])
+makeTask('MEETINGS AND REPORTS', 14, 11, 22, 50, [rHLR, rVV, rMMM])
 
-makeSubtask('Prog.Rep.', 1, 11, 2, 100, [rHLR, rVV, rMMM])
-makeSubtask('Meeting', 9, 11, 1, 100, [rHLR, rVV, rMMM])
 makeSubtask('Prog.Rep.', 15, 11, 2, 100, [rHLR, rVV, rMMM])
 makeSubtask('Meeting', 23, 11, 1, 0, [rHLR, rVV, rMMM])
-makeSubtask('Project report', 24, 11, 10, 0, [rHLR, rVV, rMMM])
+makeSubtask('Project report', 1, 12, 7, 0, [rHLR, rVV, rMMM])
 makeSubtask('Prog.Rep.', 29, 11, 2, 0, [rHLR, rVV, rMMM])
 makeSubtask('Meeting', 7, 12, 1, 0, [rHLR, rVV, rMMM])
 
-makeMilestone('Working GUI', [tasks[10], tasks[11]])
-makeMilestone('Autonomic operations', [tasks[4], tasks[5], tasks[14]])
-makeMilestone('Finished project report', [tasks[0], tasks[7], tasks[12], tasks[18], tasks[32]])
+makeMilestone('Autonomic operations', [tasks[1], tasks[3], tasks[5], tasks[15]])
+makeMilestone('Finished project report', [tasks[0], tasks[8], tasks[13], tasks[20], tasks[28]])
 
 
 
 
 pRVR = makeProject('Sphero RVR', tasks)
-pRVR.make_svg_for_tasks(filename='w46.svg', today=dt.date.today())
+pRVR.make_svg_for_tasks(filename='w48.svg', today=dt.date.today())
 
 if (__name__ == '__main__'):
     print(dt.date.today())
