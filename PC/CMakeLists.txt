@@ -23,6 +23,7 @@ set(DEPS
         nlohmann_json/3.11.2
         )
 
+conan_cmake_autodetect(settings)
 conan_cmake_run(
         REQUIRES
         ${DEPS}
@@ -30,6 +31,7 @@ conan_cmake_run(
         BUILD missing
         BASIC_SETUP CMAKE_TARGETS
         OPTIONS opencv:contrib=True         # Needed for Aruco module
+        SETTINGS ${settings}
 )
 
 link_libraries(
