@@ -8,29 +8,28 @@
  * This class expects a 3x3 intrinsic camera matrix of type cv::Mat and a 5x1 distortion coefficient row vector of type cv::Mat when
  * object is initialized.
  *
- * As an example:
- *
+ */
 
 // Camera intrinsic parameters
 struct {
-    double FX = 656.6992227;
-    double FY = 658.4488084;
-    double CX = 350.5463367;
-    double CY = 248.9997307;
+    double FX = 995.50122591;
+    double FY = 997.07773661;
+    double CX = 654.26445889;
+    double CY = 359.2864204;
 }Intr;
 
 // Distortion coefficients
 struct {
-    double K1 = 0.1063427;
-    double K2 = 0.6210248;
-    double K3 = -3.0955403;
-    double P1 = -0.0031847;
-    double P2 = 0.0127446;
+    double K1 = 0.15714317;
+    double K2 = -0.01034812;
+    double K3 = -0.79161526;
+    double P1 = 0.00465239;
+    double P2 = 0.00337487;
 }Dist;
 
 cv::Mat cameraMatrix = (cv::Mat1d(3,3) << Intr.FX, 0, Intr.CX, 0, Intr.FY, Intr.CY, 0, 0, 1);
 cv::Mat distCoeff = (cv::Mat1d(1, 5) << Dist.K1, Dist.K2, Dist.P1, Dist.P2, Dist.K3);
- */
+
 
 
 
