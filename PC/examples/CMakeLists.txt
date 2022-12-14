@@ -14,3 +14,5 @@ add_executable(udp_client udp_client_img_test.cpp)
 
 add_executable(aruco_est_pos aruco_est_pos.cpp)
 
+add_executable(servodata servodata.cpp)
+
