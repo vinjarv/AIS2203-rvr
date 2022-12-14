@@ -9,8 +9,19 @@ Control::Control(const std::string& ip, const std::string& map_file)
     :   joystick(115200),
         rvrdata(ip, 5555),
         controller(ip, 8888),
+        imagestream(ip, 8889),
         map(map_file)
 {
+    // Initialize joystick filter
+    float q = 0.4f;
+    float r = 4.0f;
+    joystick.setKalmanQ_SD(q);
+    joystick.setKalmanR_SD(r);
+
+    // Start fetching camera data
+    imagestream.init();
+    imagestream.run();
+    // Start running background_task() in a new thread
     background_thread = std::thread([&]{background_task();});
 };
 
@@ -65,7 +76,7 @@ void Control::setManualMode(bool manual_state) {
 
 bool Control::isNear(const std::string& id, const float tolerance) {
     auto point = map.points[id];
-    // TODO: add rvr position input
-    float distance = std::hypot(point.x - 0, point.y - 0);
+    auto rvr = rvrdata.getState();
+    float distance = std::hypot(point.x - rvr.x, point.y - rvr.y);
     return distance <= tolerance;
 }

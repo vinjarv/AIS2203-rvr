@@ -43,8 +43,9 @@ link_libraries(
 
 include_directories(include/AIS2203-rvr)
 
-add_library(control Control.cpp)
 add_library(imagestream ImageStream.cpp)
+add_library(control Control.cpp)
+target_link_libraries(control imagestream)
 
 add_subdirectory(examples)
 

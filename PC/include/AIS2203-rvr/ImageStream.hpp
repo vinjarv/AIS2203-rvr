@@ -7,6 +7,8 @@
 #include <boost/asio.hpp>
 #include <opencv2/opencv.hpp>
 
+//#include "ArucoDetection.hpp"
+
 class ImageStream{
 public:
     ImageStream(const std::string& host_ip, const int port);
@@ -16,7 +18,6 @@ public:
 
     cv::Mat getImage(){return img;};
     bool display(const std::string& window_name);
-
     void set_img_size(int height, int width);
 
 private:

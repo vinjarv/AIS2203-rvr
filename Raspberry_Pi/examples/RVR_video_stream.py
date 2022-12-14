@@ -71,23 +71,4 @@ if __name__ == '__main__':
         vidStream.run(cap)
         
     cap.release()
-        
-    
-
-    
-    
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
 

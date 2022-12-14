@@ -6,7 +6,7 @@
 
 class RVRController {
 public:
-    RVRController (std::string ip, unsigned int port) :
+    RVRController (const std::string& ip, unsigned int port) :
     ctx(zmqpp::context()),
     socket(zmqpp::socket(ctx, zmqpp::socket_type::pub)),
     endpoint("tcp://" + ip + ":" + std::to_string(port))

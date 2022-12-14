@@ -3,6 +3,7 @@
 #include <thread>
 #include <atomic>
 
+#include "ImageStream.hpp"
 #include "RVRController.hpp"
 #include "RVRData.hpp"
 #include "SerialJoystick.hpp"
@@ -17,6 +18,7 @@ public:
     float manual_speed = 1;
 
     SerialJoystick joystick;
+    ImageStream imagestream;
     RVRController controller;
     RVRData rvrdata;
     PointMap map;
