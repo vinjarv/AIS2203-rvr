@@ -29,9 +29,7 @@ public:
             std::string{"\"speed_rotation\":"} + std::to_string(speed_rotation) +
             std::string{"}}"}
         };
-        zmqpp::message_t msg;
-        msg << command;
-        socket.send(msg);
+        sendCommand(command);
     }
 
     void driveAuto(const float x, const float y, const float yaw)
@@ -44,9 +42,7 @@ public:
             std::string{"\"yaw\":"} + std::to_string(yaw) +
             std::string{"}}"}
         };
-        zmqpp::message_t msg;
-        msg << command;
-        socket.send(msg);
+        sendCommand(command);
     }
 
     void driveStop() {
@@ -61,9 +57,7 @@ public:
                 std::string{"\"angle_deg\":"} + std::to_string(angle_deg) +
                 std::string{"}}"}
         };
-        zmqpp::message_t msg;
-        msg << command;
-        socket.send(msg);
+        sendCommand(command);
     }
 
     void setColour(const unsigned int r, const unsigned int g, const unsigned int b) {
@@ -75,12 +69,16 @@ public:
                 std::string{"\"b\":"} + std::to_string(b) +
                 std::string{"}}"}
         };
+        sendCommand(command);
+    }
+
+private:
+    void sendCommand(const std::string& command){
         zmqpp::message_t msg;
         msg << command;
         socket.send(msg);
     }
 
-private:
     zmqpp::context ctx;
     zmqpp::socket socket;
     zmqpp::endpoint_t endpoint;

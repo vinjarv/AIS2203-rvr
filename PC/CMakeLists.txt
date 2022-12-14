@@ -43,6 +43,12 @@ link_libraries(
 
 include_directories(include/AIS2203-rvr)
 
+add_library(control Control.cpp)
+add_library(imagestream ImageStream.cpp)
+
 add_subdirectory(examples)
 
 file(COPY resources/ DESTINATION ${CMAKE_BINARY_DIR}/bin/resources)
+
+add_executable(main_gui gui.cpp)
+target_link_libraries(main_gui control)

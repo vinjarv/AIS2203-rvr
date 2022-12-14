@@ -5,8 +5,8 @@
 #include <opencv2/opencv.hpp>
 #define CVUI_IMPLEMENTATION
 #include "cvui.h"
-#include "rvr_controller.hpp"
-#include "serial_joystick.hpp"
+#include "RVRController.hpp"
+#include "SerialJoystick.hpp"
 
 int main() {
     // Variables for plotting

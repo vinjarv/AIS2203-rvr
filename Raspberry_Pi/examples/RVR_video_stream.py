@@ -18,11 +18,11 @@ class Videostream:
         self.__sock.bind((self._host_ip, self._port))
         
     def run(self, cap):
-        print("run init")
+        #print("run init")
         img_size, addr = self.__recvImgSize()
-        print("addr: ", addr)
+        #print("addr: ", addr)
         ret, img_frame = cap.read()
-        print("ret: ", ret)
+        #print("ret: ", ret)
         img_frame_resized = cv.resize(img_frame, img_size, interpolation=cv.INTER_AREA)
         suc, img_enc = cv.imencode(".jpg", img_frame_resized)
         if suc:
@@ -61,10 +61,10 @@ class Videostream:
         t0 = time.time()
         for i in range(len(byte_array)):
             self.__sock.sendto(byte_array[i], addr)
-            time.sleep(0.001)
+            #time.sleep(0.001)
                           
 if __name__ == '__main__':  
-    vidStream = Videostream("0.0.0.0", 8888)
+    vidStream = Videostream("0.0.0.0", 8889)
     vidStream.initServer()
     cap = cv.VideoCapture(0, cv.CAP_ANY)
     while True:

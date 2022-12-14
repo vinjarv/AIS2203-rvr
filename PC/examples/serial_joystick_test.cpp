@@ -1,4 +1,4 @@
-#include "serial_joystick.hpp"
+#include "SerialJoystick.hpp"
 #include <iostream>
 #include <vector>
 

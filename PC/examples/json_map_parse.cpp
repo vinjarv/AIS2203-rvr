@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "nlohmann/json.hpp"
-#include "point_map.hpp"
+#include "PointMap.hpp"
 
 int main(int argc, char** argv)
 {

@@ -10,9 +10,7 @@ add_executable(joystick_manual_control serial_manual_control.cpp)
 
 add_executable(json_map_parse json_map_parse.cpp)
 
-add_executable(udp_client udp_client_img_test.cpp)
-
-add_executable(aruco_est_pos aruco_est_pos.cpp)
+add_executable(udp_img_test udp_client_img_test.cpp)
+target_link_libraries(udp_img_test imagestream)
 
 add_executable(servodata servodata.cpp)
-
