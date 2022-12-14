@@ -7,15 +7,14 @@ Sudo:
 import cv2 as cv
 import socket
 import time
-import multiprocessing as mp
 
-def sendSensordata():
+#def sendSensordata():
     # Implementer data-overføring fra rPi her Helene
-    tmp = 0
+    #tmp = 0
     
-def recvCommands():
+#def recvCommands():
     # Implementer kommando- overføring her Helene
-    tmp = 0
+    #tmp = 0
     
 
 class Videostream:
@@ -32,8 +31,11 @@ class Videostream:
         self.__sock.bind((self._host_ip, self._port))
         
     def run(self, cap):
+        print("run init")
         img_size, addr = self.__recvImgSize()
-        _, img_frame = cap.read()
+        print("addr: ", addr)
+        ret, img_frame = cap.read()
+        print("ret: ", ret)
         img_frame_resized = cv.resize(img_frame, img_size, interpolation=cv.INTER_AREA)
         suc, img_enc = cv.imencode(".jpg", img_frame_resized)
         if suc:
@@ -78,10 +80,12 @@ class Videostream:
     
                           
 if __name__ == '__main__':  
-    vidStream = Videostream("127.0.0.1", 14)
+    vidStream = Videostream("0.0.0.0", 8888)
     vidStream.initServer()
     # Implement switch case or something so vidcap only starts when rx_buf != 0 (timeout maybe 5sek)
     cap = cv.VideoCapture(0, cv.CAP_ANY)
+    if cap:
+        print("cap true")
     while True:
         vidStream.run(cap)
         

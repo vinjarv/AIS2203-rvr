@@ -5,7 +5,7 @@
 
 
 /**
- * This class expects a 3x3 intrinsic camera matrix of type cv::Mat and a 5x1 distortion coeffisient row vector of type cv::Mat when
+ * This class expects a 3x3 intrinsic camera matrix of type cv::Mat and a 5x1 distortion coefficient row vector of type cv::Mat when
  * object is initialized.
  *
  * As an example:
@@ -86,7 +86,10 @@ public:
      */
     ArucoDetection(cv::Mat& camMat, cv::Mat& distCoeffs): _camMat(camMat), _distCoeffs(distCoeffs){}
 
-    //Public mamber function that takes in images as parameter and returns image marked with identified aruco markers
+    /** Public member function that takes in images as parameter and returns image marked with identified aruco markers
+     *
+     * @param inputImg
+     */
     cv::Mat getArucoImg(cv::Mat& inputImg){
         cv::Mat outputImg;
         outputImg = inputImg.clone();
