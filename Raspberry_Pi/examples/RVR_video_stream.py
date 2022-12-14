@@ -1,21 +1,8 @@
 
-'''
-Sudo:   
-        - Make crash control     
-'''
-
 import cv2 as cv
 import socket
 import time
 
-#def sendSensordata():
-    # Implementer data-overføring fra rPi her Helene
-    #tmp = 0
-    
-#def recvCommands():
-    # Implementer kommando- overføring her Helene
-    #tmp = 0
-    
 
 class Videostream:
     RX_BUFFER_SIZE = 4
@@ -75,17 +62,11 @@ class Videostream:
         for i in range(len(byte_array)):
             self.__sock.sendto(byte_array[i], addr)
             time.sleep(0.001)
-        print("PFS: \t", 1/(time.time()-t0))
-
-    
                           
 if __name__ == '__main__':  
     vidStream = Videostream("0.0.0.0", 8888)
     vidStream.initServer()
-    # Implement switch case or something so vidcap only starts when rx_buf != 0 (timeout maybe 5sek)
     cap = cv.VideoCapture(0, cv.CAP_ANY)
-    if cap:
-        print("cap true")
     while True:
         vidStream.run(cap)
         
